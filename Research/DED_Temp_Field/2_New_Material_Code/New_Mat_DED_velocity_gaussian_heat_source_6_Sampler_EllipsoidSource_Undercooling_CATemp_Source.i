@@ -156,7 +156,7 @@
     rz = 0.000375 # 0.000375
     power = 300 # 300 60 65
     efficiency = 0.3 # 0.3
-    factor = 1 # 2 1 0.5 1.5
+    factor = 0.5 # 2 1 0.5 1.5 2.5
     function_x = path_x
     function_y = path_y
     function_z = path_z
@@ -252,6 +252,10 @@
   #   family = LAGRANGE
   #   order = FIRST
   # []
+  [temperature_dt]
+    family = MONOMIAL
+    order = CONSTANT
+  []
 []
 
 # [Functions]
@@ -277,42 +281,50 @@
 #   []
 # []
 
-# [AuxKernels]
-#   # [undercooling]
-#   #   type = FunctionAux
-#   #   variable = current_Temp
-#   #   function = undercooling
-#   #   execute_on = 'INITIAL TIMESTEP_BEGIN'
-#   # []
-#   # [Dendrite_Growth_Rate]
-#   #   type = FunctionAux
-#   #   variable = undercooling
-#   #   function = Dendrite_Growth_Rate
-#   #   execute_on = 'INITIAL TIMESTEP_BEGIN'
-#   # []
+[AuxKernels]
+  # [undercooling]
+  #   type = FunctionAux
+  #   variable = current_Temp
+  #   function = undercooling
+  #   execute_on = 'INITIAL TIMESTEP_BEGIN'
+  # []
+  # [Dendrite_Growth_Rate]
+  #   type = FunctionAux
+  #   variable = undercooling
+  #   function = Dendrite_Growth_Rate
+  #   execute_on = 'INITIAL TIMESTEP_BEGIN'
+  # []
 
-#   # [current_Temp]
-#   #   type = FunctionAux
-#   #   variable = current_Temp
-#   #   function = current_Temp
-#   #   execute_on = 'INITIAL TIMESTEP_BEGIN'
-#   # []
+  # [current_Temp]
+  #   type = FunctionAux
+  #   variable = current_Temp
+  #   function = current_Temp
+  #   execute_on = 'INITIAL TIMESTEP_BEGIN'
+  # []
 
-#   [undercooling]
-#     type = FunctionAux
-#     variable = undercooling
-#     function = undercooling
-#     execute_on = 'INITIAL TIMESTEP_BEGIN'
-#   []
+  # [undercooling]
+  #   type = FunctionAux
+  #   variable = undercooling
+  #   function = undercooling
+  #   execute_on = 'INITIAL TIMESTEP_BEGIN'
+  # []
 
-#   [Dendrite_Growth_Rate]
-#     type = FunctionAux
-#     variable = Dendrite_Growth_Rate
-#     function = Dendrite_Growth_Rate
-#     execute_on = 'INITIAL TIMESTEP_BEGIN'
-#   []
+  # [Dendrite_Growth_Rate]
+  #   type = FunctionAux
+  #   variable = Dendrite_Growth_Rate
+  #   function = Dendrite_Growth_Rate
+  #   execute_on = 'INITIAL TIMESTEP_BEGIN'
+  # []
 
-# []
+  [T_derivative]
+    type = TimeDerivativeAux
+    variable = temperature_dt
+    functor = temp
+    factor = 1
+    execute_on = 'TIMESTEP_END'
+  []
+
+[]
 
 [Preconditioning]
   [smp]
@@ -361,7 +373,8 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
-  file_base = 'outputs/CATemp_Source/Higher_Path_4_300W_BC_factor1_ClosetotheTop/Higher_Path_4_300W_BC_factor1_ClosetotheTop_out'
+  # file_base = 'outputs/CATemp_Source/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD_out'
+  file_base = 'outputs/G_R_Ratio/Study_Bulge_1_300W_BC_factor1/Study_Bulge_1_300W_BC_factor1_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'

@@ -68,7 +68,8 @@ SolidificationRate::computeQpProperties()
   else
     _cooling_rate[_qp] = 0.0;
 
-  _temp_gradient[_qp] = MetaPhysicL::raw_value(_temp_grad[_qp].norm() / _thermal_conductivity[_qp]);
+  // _temp_gradient[_qp] = MetaPhysicL::raw_value(_temp_grad[_qp].norm() / _thermal_conductivity[_qp]);
+  _temp_gradient[_qp] = MetaPhysicL::raw_value(_temp_grad[_qp].norm());
 
   _solidification_rate[_qp] = 1.0 / _temp_gradient[_qp] * _cooling_rate[_qp];
 }
