@@ -335,7 +335,7 @@
 
 [VectorPostprocessors]
   [point_value_vector_postprocessor_u]
-    type = PointValueSampler
+    type = PointValueSamplerCSV
     variable = 'temp temperature_gradient solidification_rate'                       #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
     samples_file = data_points_CATemp_5_4LargerRangeZ.csv     #  only for modified code for reading CSV File      data_points_test.csv
     column_indices = '0 1 2'                     #  only for modified code for reading CSV File
