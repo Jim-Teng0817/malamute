@@ -373,8 +373,8 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
-  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
-  file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor1/'
+  file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
+  # file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/'
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'
