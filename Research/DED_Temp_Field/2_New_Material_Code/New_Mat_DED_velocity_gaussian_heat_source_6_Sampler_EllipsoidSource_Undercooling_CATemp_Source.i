@@ -336,9 +336,10 @@
 [VectorPostprocessors]
   [point_value_vector_postprocessor_u]
     type = PointValueSamplerCSV
-    variable = 'temp temperature_gradient solidification_rate'                       #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
+    variable = 'temp temperature_gradient solidification_rate '       # temperature_gradient solidification_rate                #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
     samples_file = data_points_CATemp_5_4LargerRangeZ.csv     #  only for modified code for reading CSV File      data_points_test.csv
     column_indices = '0 1 2'                     #  only for modified code for reading CSV File
+    # column_indices = '0 1 2'                     #  only for modified code for reading CSV File
     # points = '0.002 0.0012 0.006 0.002 0.0012 0.0007  0.002 0.0012 0.008  0.002 0.0012 0.009  0.002 0.0012 0.010'
     # points = '0 0.0012 0.001  0.002 0.0012 0.001  0.004 0.0012 0.001'
     # points = '0.001 0 0 0.002 0 0'
@@ -373,8 +374,8 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
-  file_base = 'outputs/CATemp_Source/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD_out'
-  # file_base = 'outputs/G_R_Ratio/Study_Bulge_1_300W_BC_factor1/Study_Bulge_1_300W_BC_factor1_out'
+  # file_base = 'outputs/CATemp_Source/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD/Higher_Path_5_300W_BC_factor5_ClosetotheTop_BCTopD_out'
+  file_base = 'outputs/G_R_Ratio/Study_Bulge_1_300W_BC_factor1_Test/Study_Bulge_1_300W_BC_factor1_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'

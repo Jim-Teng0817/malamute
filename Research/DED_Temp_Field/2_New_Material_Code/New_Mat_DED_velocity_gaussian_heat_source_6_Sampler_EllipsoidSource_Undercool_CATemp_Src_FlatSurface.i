@@ -8,11 +8,11 @@
     type = GeneratedMeshGenerator
     dim = 3
     xmin = 0
-    xmax = 0.004  # 1  0.004  
+    xmax = 0.004  # 1  0.004     0.004
     ymin = 0
-    ymax = 0.003  # 0.5  0.001
+    ymax = 0.0024  # 0.5  0.001  0.003
     zmin = 0
-    zmax = 0.002  # 0.1  0.001
+    zmax = 0.0015  # 0.1  0.001   0.002
     nx = 20    # 10  20   200
     ny = 10    # 5   10   100
     nz = 10    # 1   10   100
@@ -209,11 +209,11 @@
   []
   [path_y]
     type = ParsedFunction
-    expression = 0.0005 # 2*sin(2.0*pi*t)   0  0.0012
+    expression = 0.0012 # 2*sin(2.0*pi*t)   0  0.0012  0.0005
   []
   [path_z]
     type = ParsedFunction
-    expression = 0.001 # 1 0.001 0.0012 0.0008 0.00115
+    expression = 0.0015 # 1 0.001 0.0012 0.0008 0.00115
   []
 
   # [function]
@@ -336,13 +336,14 @@
 [VectorPostprocessors]
   [point_value_vector_postprocessor_u]
     type = PointValueSamplerCSV
-    variable = 'temp temperature_gradient solidification_rate'                       #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
+    variable = 'temp temperature_gradient solidification_rate'             #  temperature_gradient solidification_rate          #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
     samples_file = data_points_CATemp_5_4LargerRangeZ.csv     #  only for modified code for reading CSV File      data_points_test.csv
     column_indices = '0 1 2'                     #  only for modified code for reading CSV File
     # points = '0.002 0.0012 0.006 0.002 0.0012 0.0007  0.002 0.0012 0.008  0.002 0.0012 0.009  0.002 0.0012 0.010'
     # points = '0 0.0012 0.001  0.002 0.0012 0.001  0.004 0.0012 0.001'
     # points = '0.001 0 0 0.002 0 0'
     sort_by = id
+    # default_values = '300 0 0'    #  default_values = '300'   # This samples: temp, temperature_gradient, and solidification_rate If only sample temp => '300'
     execute_on = 'initial timestep_end'
   []
 []
@@ -373,8 +374,8 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
-  file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
-  # file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/'
+  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
+  file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/Study_Flat_1_300W_BC_factor_Test_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'
