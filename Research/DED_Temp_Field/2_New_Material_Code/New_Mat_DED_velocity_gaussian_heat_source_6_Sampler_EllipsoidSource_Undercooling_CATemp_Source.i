@@ -1,7 +1,7 @@
 [Mesh]
   [DED_clad]
     type = FileMeshGenerator
-    file = DED_Temp_Field_Test_6_Mesh_1.e
+    file = DED_Temp_Field_Test_9_Mesh_1.e  # DED_Temp_Field_Test_6_Mesh_1.e
   []
 
   # [gen]
@@ -205,7 +205,7 @@
 [Functions]
   [path_x]
     type = ParsedFunction
-    expression = 8.47e-3*t # 2*cos(2.0*pi*t)
+    expression = "8.47e-3*t + 0.01" # 2*cos(2.0*pi*t) 8.47e-3*t  6.35e-3*t  10.58e-3*t  "8.47e-3*t + 0.01"
   []
   [path_y]
     type = ParsedFunction
@@ -347,6 +347,21 @@
   []
 []
 
+[Adaptivity]      # Added to reduce unused elements (Jim Oct. 1, 2025) 
+  max_h_level = 5
+  initial_marker = 'box'
+  initial_steps = 2
+  [Markers]
+    [box]
+      type = BoxMarker
+      bottom_left = '0.0090 0.0070 0.0070' # '0 0 0'  '0.0110 0.0090 0.0090'
+      top_right = '0.0160 0.0130 0.0120'  # '0.5 1 0'  '0.0140 0.0110 0.0100'
+      inside = 'refine'
+      outside = 'do_nothing'
+    []
+  []
+[]
+
 [Executioner]
   type = Transient
 
@@ -354,8 +369,8 @@
 
   solve_type = 'NEWTON'
 
-  petsc_options_iname = '-ksp_type -pc_type -pc_factor_mat_solver_package'
-  petsc_options_value = 'preonly lu       superlu_dist'
+  petsc_options_iname = '-pc_type -pc_hypre_type' # '-ksp_type -pc_type -pc_factor_mat_solver_package'
+  petsc_options_value = 'hypre boomeramg' # 'preonly lu       superlu_dist'
 
   line_search = 'none'
 

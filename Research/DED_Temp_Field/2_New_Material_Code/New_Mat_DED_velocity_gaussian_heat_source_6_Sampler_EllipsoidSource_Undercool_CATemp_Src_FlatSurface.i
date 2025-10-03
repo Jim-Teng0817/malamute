@@ -8,14 +8,14 @@
     type = GeneratedMeshGenerator
     dim = 3
     xmin = 0
-    xmax = 0.004  # 1  0.004  
+    xmax = 0.0240  # 1    0.004   0.0100
     ymin = 0
-    ymax = 0.003  # 0.5  0.001
+    ymax = 0.0200  # 0.5  0.002   0.0200   # Need to change the laser path function_y accordingly
     zmin = 0
-    zmax = 0.002  # 0.1  0.001
-    nx = 20    # 10  20   200
-    ny = 10    # 5   10   100
-    nz = 10    # 1   10   100
+    zmax = 0.0100  # 0.1  0.001   0.0100   # Need to change the laser path function_z accordingly
+    nx = 80    # 100    # 10  20   200
+    ny = 80     # 80    # 5   10   100
+    nz = 40     # 50    # 1   10   100
   []
 []
 
@@ -154,9 +154,9 @@
     rx = 0.000375 # 0.000375
     ry = 0.000375 # 0.000375
     rz = 0.000375 # 0.000375
-    power = 300 # 300 60 65
+    power = 350 # 300 60 65  300 250 350
     efficiency = 0.3 # 0.3
-    factor = 0.5 # 2 1 0.5 1.5
+    factor = 0.9 # 2.0 1.0 0.5 1.5 0.8 0.9
     function_x = path_x
     function_y = path_y
     function_z = path_z
@@ -205,39 +205,18 @@
 [Functions]
   [path_x]
     type = ParsedFunction
-    expression = 8.47e-3*t # 2*cos(2.0*pi*t)
+    expression = "10.58e-3*t + 0.01" # 2*cos(2.0*pi*t) 8.47e-3*t  6.35e-3*t  10.58e-3*t
   []
   [path_y]
     type = ParsedFunction
-    expression = 0.0005 # 2*sin(2.0*pi*t)   0  0.0012
+    expression = 0.010 # 2*sin(2.0*pi*t)   0  0.0012  0.0005   # Adjust according to ymax in the mesh block
   []
   [path_z]
     type = ParsedFunction
-    expression = 0.001 # 1 0.001 0.0012 0.0008 0.00115
+    expression = 0.010 # 1 0.001 0.0012 0.0008 0.00115        # Adjust according to zmax in the mesh block
   []
-
-  # [function]
-  #   type = ParsedVectorFunction
-  #   expression_x = t*x
-  #   expression_y = t*y
-  # []
 []
 
-# [AuxVariables]
-#   [vec]
-#     family = LAGRANGE_VEC
-#     order = FIRST
-#   []
-# []
-
-# [AuxKernels]
-#   [vec]
-#     type = VectorFunctionAux
-#     variable = vec
-#     function = function
-#     execute_on = 'INITIAL TIMESTEP_END'
-#   [../]
-# []
 
 [AuxVariables]
   # [current_Temp]
@@ -258,28 +237,6 @@
   []
 []
 
-# [Functions]
-#   # [current_Temp]
-#   #   type = ParsedFunction
-#   #   symbol_names = "current_Temp"
-#   #   symbol_values = "temp"  # Use the actual variable name here
-#   #   expression = "current_Temp"
-#   # []
-#   [undercooling]
-#     # type = ParsedFunction
-#     # expression = "T_m - current_Temp"
-#     type = ParsedFunction
-#     symbol_names = "T_m"
-#     symbol_values = "1620.0"  # Use the actual variable name here
-#     expression = "T_m - current_Temp"
-#   []
-#   [Dendrite_Growth_Rate]
-#     type = ParsedFunction
-#     symbol_names = "T_m Avel nvel"
-#     symbol_values = "1620.00 0.00001 1.00"
-#     expression = "Avel * (T_m - current_Temp)^(nvel)"
-#   []
-# []
 
 [AuxKernels]
   # [undercooling]
@@ -336,14 +293,30 @@
 [VectorPostprocessors]
   [point_value_vector_postprocessor_u]
     type = PointValueSamplerCSV
-    variable = 'temp temperature_gradient solidification_rate'                       #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
-    samples_file = data_points_CATemp_5_4LargerRangeZ.csv     #  only for modified code for reading CSV File      data_points_test.csv
+    variable = 'temp temperature_gradient solidification_rate'             #  temperature_gradient solidification_rate          #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
+    samples_file = data_points_CATemp_FlatSurface_2.csv     #  only for modified code for reading CSV File      data_points_test.csv
     column_indices = '0 1 2'                     #  only for modified code for reading CSV File
     # points = '0.002 0.0012 0.006 0.002 0.0012 0.0007  0.002 0.0012 0.008  0.002 0.0012 0.009  0.002 0.0012 0.010'
     # points = '0 0.0012 0.001  0.002 0.0012 0.001  0.004 0.0012 0.001'
     # points = '0.001 0 0 0.002 0 0'
     sort_by = id
+    # default_values = '300 0 0'    #  default_values = '300'   # This samples: temp, temperature_gradient, and solidification_rate If only sample temp => '300'
     execute_on = 'initial timestep_end'
+  []
+[]
+
+[Adaptivity]      # Added to reduce unused elements (Jim Oct. 1, 2025) 
+  max_h_level = 5
+  initial_marker = 'box'
+  initial_steps = 2
+  [Markers]
+    [box]
+      type = BoxMarker
+      bottom_left = '0.0090 0.0075 0.0075' # '0 0 0'  '0.0110 0.0090 0.0090'
+      top_right = '0.0160 0.0125 0.0120'  # '0.5 1 0'  '0.0140 0.0110 0.0100'
+      inside = 'refine'
+      outside = 'do_nothing'
+    []
   []
 []
 
@@ -354,8 +327,8 @@
 
   solve_type = 'NEWTON'
 
-  petsc_options_iname = '-ksp_type -pc_type -pc_factor_mat_solver_package'
-  petsc_options_value = 'preonly lu       superlu_dist'
+  petsc_options_iname = '-pc_type -pc_hypre_type' # '-ksp_type -pc_type -pc_factor_mat_solver_package'
+  petsc_options_value = 'hypre boomeramg' # 'preonly lu       superlu_dist'
 
   line_search = 'none'
 
@@ -365,7 +338,7 @@
   nl_abs_tol = 1e-10 # 1e-8
 
   start_time = 0.0
-  end_time = 0.47 # 20  0.5 0.47
+  end_time = 0.37 # 20  0.5 0.47 (for 8.47e-3) 0.62 (for 6.35e-3) 0.37 (for 10.58e-3)
   dt = 0.01 # 1
   dtmin = 1e-4
 []
@@ -373,8 +346,10 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
-  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
-  file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor1/'
+  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set8_350W_v847_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set8_350W_v847_factorPoint9_LargerDomainSample_Adaptivity_1_out'
+  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set7_350W_v635_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set7_350W_v635_factorPoint9_LargerDomainSample_Adaptivity_1_out'   #  _LargerDomain
+  file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set9_350W_v1058_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set9_350W_v1058_factorPoint9_LargerDomainSample_Adaptivity_1_out'     
+  # file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/Study_Flat_1_300W_BC_factor_Test_out'      
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'
@@ -399,4 +374,8 @@
     variable = temp
     value_type = min
   []
+  # [memory]
+  #   type = MemoryUsage
+  #   outputs = 'console'
+  # []
 []
