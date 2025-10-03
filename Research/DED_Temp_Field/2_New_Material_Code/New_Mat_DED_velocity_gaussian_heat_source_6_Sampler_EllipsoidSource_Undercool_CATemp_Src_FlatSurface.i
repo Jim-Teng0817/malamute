@@ -8,6 +8,7 @@
     type = GeneratedMeshGenerator
     dim = 3
     xmin = 0
+<<<<<<< HEAD
     xmax = 0.0240  # 1    0.004   0.0100
     ymin = 0
     ymax = 0.0200  # 0.5  0.002   0.0200   # Need to change the laser path function_y accordingly
@@ -16,6 +17,16 @@
     nx = 80    # 100    # 10  20   200
     ny = 80     # 80    # 5   10   100
     nz = 40     # 50    # 1   10   100
+=======
+    xmax = 0.004  # 1  0.004     0.004
+    ymin = 0
+    ymax = 0.0024  # 0.5  0.001  0.003
+    zmin = 0
+    zmax = 0.0015  # 0.1  0.001   0.002
+    nx = 20    # 10  20   200
+    ny = 10    # 5   10   100
+    nz = 10    # 1   10   100
+>>>>>>> 147c6c615b295c01955c05e3dea81642dfd46fff
   []
 []
 
@@ -209,11 +220,19 @@
   []
   [path_y]
     type = ParsedFunction
+<<<<<<< HEAD
     expression = 0.010 # 2*sin(2.0*pi*t)   0  0.0012  0.0005   # Adjust according to ymax in the mesh block
   []
   [path_z]
     type = ParsedFunction
     expression = 0.010 # 1 0.001 0.0012 0.0008 0.00115        # Adjust according to zmax in the mesh block
+=======
+    expression = 0.0012 # 2*sin(2.0*pi*t)   0  0.0012  0.0005
+  []
+  [path_z]
+    type = ParsedFunction
+    expression = 0.0015 # 1 0.001 0.0012 0.0008 0.00115
+>>>>>>> 147c6c615b295c01955c05e3dea81642dfd46fff
   []
 []
 
@@ -294,7 +313,11 @@
   [point_value_vector_postprocessor_u]
     type = PointValueSamplerCSV
     variable = 'temp temperature_gradient solidification_rate'             #  temperature_gradient solidification_rate          #  only for modified code for reading CSV File     # undercooling_pn dendrite_growth_rate_pn
+<<<<<<< HEAD
     samples_file = data_points_CATemp_FlatSurface_2.csv     #  only for modified code for reading CSV File      data_points_test.csv
+=======
+    samples_file = data_points_CATemp_5_4LargerRangeZ.csv     #  only for modified code for reading CSV File      data_points_test.csv
+>>>>>>> 147c6c615b295c01955c05e3dea81642dfd46fff
     column_indices = '0 1 2'                     #  only for modified code for reading CSV File
     # points = '0.002 0.0012 0.006 0.002 0.0012 0.0007  0.002 0.0012 0.008  0.002 0.0012 0.009  0.002 0.0012 0.010'
     # points = '0 0.0012 0.001  0.002 0.0012 0.001  0.004 0.0012 0.001'
@@ -346,10 +369,15 @@
 [Outputs]
   csv = true
   exodus = true # Added to visualize
+<<<<<<< HEAD
   # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set8_350W_v847_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set8_350W_v847_factorPoint9_LargerDomainSample_Adaptivity_1_out'
   # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set7_350W_v635_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set7_350W_v635_factorPoint9_LargerDomainSample_Adaptivity_1_out'   #  _LargerDomain
   file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_3_Set9_350W_v1058_factorPoint9_LargerDomainSample_Adaptivity_1/Flat_Surface_3_Set9_350W_v1058_factorPoint9_LargerDomainSample_Adaptivity_1_out'     
   # file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/Study_Flat_1_300W_BC_factor_Test_out'      
+=======
+  # file_base = 'outputs/CATemp_Source_Flat_Surface/Flat_Surface_1_300W_BC_factor1/Flat_Surface_1_300W_BC_factor1_out'
+  file_base = 'outputs/G_R_Ratio/Study_Flat_1_300W_BC_factor_Test/Study_Flat_1_300W_BC_factor_Test_out'
+>>>>>>> 147c6c615b295c01955c05e3dea81642dfd46fff
   # file_base = 'outputs/CATemp_Source/Center_Path_7_300W_BC_facto1andHalf_TopDirichlet/Center_Path_7_300W_BC_factor1andHalf_TopDirichlet_out'
   # file_base = 'outputs/CATemp_Source/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ/Center_Path_5_300W_BC_factorHalf_4LargerRangeZ_out'
   # file_base = 'outputs/65W_lowerPath_1/DED_65W_lowerPath_1_out'
